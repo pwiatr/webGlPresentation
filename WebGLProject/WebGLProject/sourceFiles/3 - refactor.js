@@ -334,6 +334,7 @@ GLApp.prototype.drawScene = function () {
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
+
     mat4.perspective(90, gl.viewportWidth / gl.viewportHeight,0.1, 100.0, this.pMatrix);
     mat4.translate(this.pMatrix, [0.0, -3.0, -2.0]);
     mat4.identity(this.mvMatrix);
