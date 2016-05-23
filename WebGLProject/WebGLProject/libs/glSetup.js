@@ -4,20 +4,20 @@ var gl;
 
 function webGlStart() {
     var canvas = document.getElementById("firstCanvas");
-    canvas.setAttribute("width",700);
+    canvas.setAttribute("width", 700);
     canvas.setAttribute("height", 700);
     // Inicjalizacja
     initGL(canvas);
     // Inicjalizacja shaderów
     initShaders();
     // Inicjalizacja bufora
-    initBuffers();  
+    initBuffers();
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.enable(gl.DEPTH_TEST);
 
     drawScene();
-    
+
 }
 
 // Wstępna inicjalizacja webGL - pobranie kontekstu + ustawienie rozmiaru obszaru roboczego
@@ -171,7 +171,7 @@ function drawScene() {
     // Zaczynamy od macierzy jednostkowej (identity matrix) - która nic nie robi i którą mnożymy przez pierwszą transformację
     // Obliczona macierz przedstawia wszystkie ruchy na raz
     // Macierz wskazująca aktualny stan ruchu/obrotu zwana jest model-view matrix (mvMatrix)
-    
+
     // Metoda identity ustawia mvMatrix jako jednostkową, by mieć od czego zacząć - przesuwa nas na punkt początkowy
     mat4.identity(mvMatrix);
 
@@ -192,7 +192,7 @@ function drawScene() {
     // Zaczyna od elementu na indeksie 0 do elementu numItems
     gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
     // Trójkąt jest narysowany - pora na kwadrat!
-    
+
     //Zmiana macierzy na centrum (z powrotem) i ustawienie na 3 w prawo
     mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
 
@@ -212,7 +212,7 @@ function move(posArr) {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     mat4.translate(mvMatrix, posArr);
-    mat4.rotate(mvMatrix, 0.01 ,[-0.01, 0.0,0.0]);
+    mat4.rotate(mvMatrix, 0.01, [-0.01, 0.0, 0.0]);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);

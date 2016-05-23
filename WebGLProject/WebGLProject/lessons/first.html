@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="../libs/glMatrix-0.9.5.min.js"></script>
+
+    <!-- To nie jest kod JS-owy, a GLSL - specjalny język Shaderów-->
+    <!-- Pierwszy określa precyzję rysowania i decyduje, że narysowane rzeczy będą białe-->
+    <script id="shader-fs" type="x-shader/x-fragment">
+
+        precision mediump float;
+
+        void main(void) {
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+        }
+    </script>
+
+    <!-- Shader, który na GPU może zrobić niemal wszystko z pozycjami vertexów
+         Ma dwie zmienne uniform - uMVMatrix i uPMatrix, które mogą być dostępne z zewnątrz
+         Mogą zostać przypisane (w 1 przykładzie) do wartości macierzy modelu-widoku i projekcji
+         Program shadera to obiekt, a zmienne uniform to jego pola
+         Shader ten wywoływany jest dla każdego vertexa (jako aVertexPosition)
+                dzięki vertexPositionAttribute w drawScene (powiązując atrybut z buforem)
+         Kod w funkcji main mnoży pozycję vertexa przez macierze modelu-widoku i projekcji
+            zwracając uzyskaną pozycję.
+    -->
+    <script id="shader-vs" type="x-shader/x-vertex">
+        attribute vec3 aVertexPosition;
+
+        uniform mat4 uMVMatrix;
+        uniform mat4 uPMatrix;
+
+        void main(void) {
+        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+        }
+    </script>
+
+    <script src="../sourceFiles/1 - initialSetup.js"></script>
+
+</head>
+<body onload="webGlStart()">
+    <canvas id="firstCanvas" style="border: none;"></canvas>
+    <input type="button" onclick="moveToBack()" />
+    <input type="button" onclick="moveToFront()" />
+</body>
+</html>

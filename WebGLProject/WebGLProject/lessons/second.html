@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+
+    <script src="../libs/glMatrix-0.9.5.min.js"></script>
+    <script src="../libs/webgl-utils.js"></script>
+
+    <script id="shader-fs" type="x-shader/x-fragment">
+        precision mediump float;
+        varying vec4 vColor;
+
+        void main(void) {
+            gl_FragColor = vColor;
+        }
+    </script>
+
+    <!-- Dzieje się niemal to samo, tylko dane vertexów koloru są przepuszczane do shadera - vColor-->
+    <script id="shader-vs" type="x-shader/x-vertex">
+        attribute vec3 aVertexPosition;
+        attribute vec4 aVertexColor;
+
+        uniform mat4 uMVMatrix;
+        uniform mat4 uPMatrix;
+        varying vec4 vColor;
+
+        void main(void) {
+        gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+        vColor = aVertexColor;
+        }
+    </script>
+
+
+</head>
+<body>
+    <canvas id="firstCanvas" style="margin: 0 25% 0 25%; border: none;"></canvas>
+    <script src="../sourceFiles/2 - colorAnim.js"></script>
+    <script type="text/javascript">
+        var app = new GLApp();
+    </script>
+</body>
+</html>

@@ -66,6 +66,8 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="lessons\third.html" />
+    <Content Include="libs\webgl-utils.js" />
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -76,8 +78,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="index.html" />
+    <Content Include="lessons\first.html" />
+    <Content Include="lessons\second.html" />
+    <Content Include="libs\gl-matrix.js" />
     <Content Include="libs\glMatrix-0.9.5.min.js" />
+    <Content Include="libs\glSetup.js" />
     <Content Include="sourceFiles\1 - initialSetup.js" />
+    <Content Include="sourceFiles\2 - colorAnim.js" />
+    <Content Include="sourceFiles\3 - refactor.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
