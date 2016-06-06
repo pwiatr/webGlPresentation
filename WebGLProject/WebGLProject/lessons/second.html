@@ -6,7 +6,6 @@
 
     <script src="../libs/glMatrix-0.9.5.min.js"></script>
     <script src="../libs/webgl-utils.js"></script>
-    <link rel="stylesheet" type="text/css" href="../css/webgl.css" />
 
     <script id="shader-fs" type="x-shader/x-fragment">
         precision mediump float;
@@ -35,15 +34,7 @@
 
 </head>
 <body>
-    <div class="nav-panel">
-        <div class="nav-controls">
-            <a href="../index.html"><img src="../images/backArrow.png" /></a>
-        </div>
-        <div class="nav-title">
-            <h1>OpenGL i WebGL</h1>
-        </div>
-    </div>
-    <canvas id="firstCanvas" ></canvas>
+    <canvas id="firstCanvas" style="margin: 0 25% 0 25%; border: none;"></canvas>
     <script src="../sourceFiles/2 - colorAnim.js"></script>
     <script type="text/javascript">
         var app = new GLApp();

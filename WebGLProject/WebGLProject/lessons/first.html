@@ -4,7 +4,6 @@
     <title></title>
     <meta charset="utf-8" />
     <script src="../libs/glMatrix-0.9.5.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../css/webgl.css" />
 
     <!-- To nie jest kod JS-owy, a GLSL - specjalny język Shaderów-->
     <!-- Pierwszy określa precyzję rysowania i decyduje, że narysowane rzeczy będą białe-->
@@ -41,14 +40,6 @@
 
 </head>
 <body onload="webGlStart()">
-    <div class="nav-panel">
-        <div class="nav-controls">
-            <a href="../index.html"><img src="../images/backArrow.png" /></a>
-        </div>
-        <div class="nav-title">
-            <h1>OpenGL i WebGL</h1>
-        </div>
-    </div>
     <canvas id="firstCanvas" style="border: none;"></canvas>
     <input type="button" onclick="moveToBack()" />
     <input type="button" onclick="moveToFront()" />

@@ -1,4 +1,3 @@
-/// <reference path="gl-matrix.js" />
 /*
  * Copyright 2010, Google Inc.
  * All rights reserved.
@@ -142,36 +141,9 @@ var create3DContext = function(canvas, opt_attribs) {
   return context;
 };
 
-var mvPushMatrix = function (matrix, matrixStack) {
-    var copy = mat4.create();
-    //mat4.set(matrix, copy);
-    mat4.copy(copy, matrix);
-    matrixStack.push(copy);
-};
-
-var mvPopMatrix = function (matrix, matrixStack) {
-    if (matrixStack.length == 0) {
-        throw "Invalid popMatrix!";
-    }
-    matrix = matrixStack.pop();
-};
-
-var degToRad = function (degrees) {
-    return degrees * Math.PI / 180;
-};
-
-var setMatrixUniform = function (shaderUniformMatrix, matrix) {
-    gl.uniformMatrix4fv(shaderUniformMatrix, false, matrix);
-}
-
-
 return {
   create3DContext: create3DContext,
-  setupWebGL: setupWebGL,
-  mvPushMatrix: mvPushMatrix,
-  mvPopMatrix: mvPopMatrix,
-  degToRad: degToRad,
-    setMatrixUniform : setMatrixUniform
+  setupWebGL: setupWebGL
 };
 }();
 
