@@ -66,7 +66,13 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="css\webgl.css" />
+    <Content Include="images\backArrow.png" />
+    <Content Include="images\ogl.png" />
+    <Content Include="images\webgl.png" />
     <Content Include="lessons\third.html" />
+    <Content Include="libs\glElement.js" />
+    <Content Include="sourceFiles\3-5 refactor.js" />
     <Content Include="libs\webgl-utils.js" />
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">

@@ -1,85 +1,13 @@
-﻿/// <reference path="../libs/gl-matrix.js" />.
+﻿/// <reference path="../libs/gl-matrix.js" />
+/// <reference path="../libs/webgl-utils.js" />
 var gl;
-
-function WebGlWrapper(canvasId, width, height) {
-    this.canvas = document.getElementById(canvasId);
-    this.canvas.setAttribute("width", width);
-    this.canvas.setAttribute("height", height);
-    gl = this.canvas.getContext("experimental-webgl");
-
-    //Initialize Shaders
-    this.initShaders('shader-fs','shader-vs');
-    //Initialize global matrixes
-
-    //Initialize buffers
-}
-
-WebGlWrapper.prototype.initShaders = function (shaders) {
-    function getShader(id) {
-        var shaderScript = document.getElementById(id);
-        if (!shaderScript) {
-            return null;
-        }
-
-        var str = "";
-        var k = shaderScript.firstChild;
-        while (k) {
-            if (k.nodeType == 3) {
-                str += k.textContent;
-            }
-            k = k.nextSibling;
-        }
-
-        var shader;
-        if (shaderScript.type == "x-shader/x-fragment") {
-            shader = gl.createShader(gl.FRAGMENT_SHADER);
-        } else if (shaderScript.type == "x-shader/x-vertex") {
-            shader = gl.createShader(gl.VERTEX_SHADER);
-        } else {
-            return null;
-        }
-
-        gl.shaderSource(shader, str);
-        gl.compileShader(shader);
-
-        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-            alert(gl.getShaderInfoLog(shader));
-            return null;
-        }
-
-        return shader;
-    }
-
-    this.shaderProgram = gl.createProgram();
-    
-    for (var shader in arguments) {
-        var glShader = getShader(shader);
-        gl.attachShader(this.shaderProgram, glShader);
-    }
-
-    gl.linkProgram(this.shaderProgram);
-
-    if (!gl.getProgramParameter(this.shaderProgram, gl.LINK_STATUS)) {
-        alert("Could not initialise shaders");
-    }
-
-    gl.useProgram(this.shaderProgram);
-
-    this.shaderProgram.vertexPositionAttribute = gl.getAttribLocation(this.shaderProgram, "aVertexPosition");
-    gl.enableVertexAttribArray(this.shaderProgram.vertexPositionAttribute);
-    this.shaderProgram.vertexColorAttribute = gl.getAttribLocation(this.shaderProgram, "aVertexColor");
-    gl.enableVertexAttribArray(this.shaderProgram.vertexColorAttribute);
-
-
-    this.shaderProgram.pMatrixUniform = gl.getUniformLocation(this.shaderProgram, "uPMatrix");
-    this.shaderProgram.mvMatrixUniform = gl.getUniformLocation(this.shaderProgram, "uMVMatrix");
-}
 
 function GlElement() {
     this.position = {
         buffer: gl.createBuffer(),
         vertices: []
     }
+    
     this.color = {
         buffer: gl.createBuffer(),
         vertices: []
@@ -112,8 +40,8 @@ function GlElement() {
 
 function GLApp() {
     this.canvas = document.getElementById("firstCanvas");
-    gl = this.canvas.getContext('experimental-webgl');
-
+    gl = WebGLUtils.create3DContext(this.canvas);
+    
     this.rTri = 0;
     this.rSquare = 0;
     this.lastTime = 0;
@@ -123,8 +51,8 @@ function GLApp() {
     this.mvMatrixStack = [];
     this.pMatrix = mat4.create();
 
-    this.canvas.setAttribute("width", 1920);
-    this.canvas.setAttribute("height", 850);
+    this.canvas.setAttribute("width", 700);
+    this.canvas.setAttribute("height", 700);
 
     this.Triangle = new GlElement();
     this.Square = new GlElement();
@@ -340,6 +268,7 @@ GLApp.prototype.drawScene = function () {
     mat4.identity(this.mvMatrix);
     mat4.translate(this.mvMatrix, [-1.0, 0.0, -3.0]);
     
+    
     this.mvPushMatrix();
     this.Floor.draw(this.shaderProgram);
     mat4.translate(this.mvMatrix, [0.0, -0.5, 0.0]);
@@ -357,7 +286,7 @@ GLApp.prototype.drawScene = function () {
     this.mvPopMatrix();
 
     mat4.translate(this.mvMatrix, [3.0, 0.0, 0.0]);
-
+    
     this.mvPushMatrix();
     mat4.rotate(this.mvMatrix, this.degToRad(this.Square.rotation), [1, 1, 0]);
     this.Square.draw(this.shaderProgram);
