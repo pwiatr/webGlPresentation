@@ -3,8 +3,10 @@
 <head>
     <title></title>
     <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="../css/webgl.css" />
 
-    <script src="../libs/glMatrix-0.9.5.min.js"></script>
+    <script src="../libs/gl-matrix.js"></script>
+    <script src="../libs/glElement.js"></script>
     <script src="../libs/webgl-utils.js"></script>
 
     <script id="shader-fs" type="x-shader/x-fragment">
@@ -34,10 +36,31 @@
 
 </head>
 <body>
-    <canvas id="firstCanvas" style=" border: none;"></canvas>
-    <script src="../sourceFiles/3 - refactor.js"></script>
+    <div class="nav-panel">
+        <div class="nav-controls">
+            <a href="../index.html"><img src="../images/backArrow.png" /></a>
+        </div>
+        <div class="nav-title">
+            <h1>OpenGL i WebGL</h1>
+        </div>
+    </div>
+    <div class="optionPanel">
+        <p>Opcje WebGL</p>
+    </div>
+    <!--<div class="canvasPanel">
+        <canvas id="firstCanvas"></canvas>
+    </div>-->
+    <!--<script src="../sourceFiles/3 - refactor.js"></script>
     <script type="text/javascript">
         var app = new GLApp();
+    </script>-->
+    <div class="canvasPanel">
+        <canvas id="secondCanvas"></canvas>
+    </div>
+    <script src="../sourceFiles/3-5 refactor.js"></script>
+    <script type="text/javascript">
+        var secondApp = new WebGlWrapper('secondCanvas', 900, 900);
     </script>
+
 </body>
 </html>
