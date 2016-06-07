@@ -4,8 +4,8 @@ var gl;
 
 function webGlStart() {
     var canvas = document.getElementById("firstCanvas");
-    canvas.setAttribute("width",700);
-    canvas.setAttribute("height", 700);
+    canvas.setAttribute("width",500);
+    canvas.setAttribute("height", 500);
     // Inicjalizacja
     initGL(canvas);
     // Inicjalizacja shaderów
@@ -172,12 +172,19 @@ function drawScene() {
     // Obliczona macierz przedstawia wszystkie ruchy na raz
     // Macierz wskazująca aktualny stan ruchu/obrotu zwana jest model-view matrix (mvMatrix)
     
+    drawElements();
+}
+
+var trpos = [-1.5, 0.0, -5.0];
+var sqpos = [3.0, 0.0, 0.0];
+
+function drawElements() {
     // Metoda identity ustawia mvMatrix jako jednostkową, by mieć od czego zacząć - przesuwa nas na punkt początkowy
     mat4.identity(mvMatrix);
 
     // Pora na rysowanie
     // Centrum przestrzeni 3d zostało ustawione (powyżej), więc pora zmienić pozycję i tam zacząć rysowanie trójkąta
-    mat4.translate(mvMatrix, [-1.5, 0.0, -7.0]);
+    mat4.translate(mvMatrix, trpos);
 
     // bindBuffer pozwala na określenie aktualnego bufora (ArrayBuffer) i wywołanie kodu, który na nim operuje
     // Wybieramy traingleVertexPositionBuffer i nakazujemy OpenGL korzystać z jego vertexów (ich pozycji)
@@ -192,9 +199,9 @@ function drawScene() {
     // Zaczyna od elementu na indeksie 0 do elementu numItems
     gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
     // Trójkąt jest narysowany - pora na kwadrat!
-    
+
     //Zmiana macierzy na centrum (z powrotem) i ustawienie na 3 w prawo
-    mat4.translate(mvMatrix, [3.0, 0.0, 0.0]);
+    mat4.translate(mvMatrix, sqpos);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, squareVertexPositionBuffer);
     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, squareVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
@@ -204,26 +211,35 @@ function drawScene() {
 
     // TRIANGLE_STRIP pozwala określić współrzędne kolejnych werteksów trójkątów - prosty sposób na zrobienie kwadratu
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, squareVertexPositionBuffer.numItems);
-
 }
 
-function move(posArr) {
+function move(matrix, arr) {
     // Wyczyszczenie canvas by rysować
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    mat4.translate(mvMatrix, posArr);
-    mat4.rotate(mvMatrix, 0.01 ,[-0.01, 0.0,0.0]);
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, triangleVertexPositionBuffer);
-    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, triangleVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
-    setMatrixUniforms();
-    gl.drawArrays(gl.TRIANGLES, 0, triangleVertexPositionBuffer.numItems);
+    mat4.translate(matrix, arr);
+    drawElements();
 }
 
-function moveToBack() {
-    move([0.01, 0.0, -0.01]);
+function rotate(matrix, arr) {
+    // Wyczyszczenie canvas by rysować
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    mat4.rotate(matrix, 0.285, arr);
+    drawElements();
 }
 
-function moveToFront() {
-    move([-0.01, 0.0, 0.01]);
+function moveElements(x, y, z) {
+    // Wyczyszczenie canvas by rysować
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+    trpos[0] += x;
+    trpos[1] += y;
+    trpos[2] += z;
+    sqpos[0] += x;
+    sqpos[1] += y;
+    sqpos[2] += z;
+
+    drawElements();
 }
+

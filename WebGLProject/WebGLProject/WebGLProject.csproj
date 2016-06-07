@@ -67,8 +67,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\webgl.css" />
+    <Content Include="images\Back.png" />
     <Content Include="images\backArrow.png" />
+    <Content Include="images\Left.png" />
+    <Content Include="images\LeftRot.png" />
     <Content Include="images\ogl.png" />
+    <Content Include="images\Right.png" />
+    <Content Include="images\RightRot.png" />
+    <Content Include="images\Up.png" />
     <Content Include="images\webgl.png" />
     <Content Include="lessons\third.html" />
     <Content Include="libs\glElement.js" />

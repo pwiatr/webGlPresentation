@@ -71,4 +71,34 @@ canvas {
     font-size: 3em;
     font-family: monospace;
     text-decoration: none;
+        color: #eee;
+
+}
+
+.main-links a:hover{
+    color: #111;
+}
+
+/*
+    Panel buttons
+*/
+
+.panel-3{
+        display: inline-block;
+}
+
+.container{
+        width: 100%;
+    position: absolute;
+    display: flex;
+}
+
+.center {
+    margin:auto;
+}
+
+.buttons {
+    padding: 50px;
+
+    vertical-align: top;
 }

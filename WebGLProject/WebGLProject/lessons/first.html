@@ -49,8 +49,28 @@
             <h1>OpenGL i WebGL</h1>
         </div>
     </div>
-    <canvas id="firstCanvas" style="border: none;"></canvas>
-    <input type="button" onclick="moveToBack()" />
-    <input type="button" onclick="moveToFront()" />
+    <div class="container">
+        <div class="center">
+            <div class="panel-3 buttons">
+                <p>Projection Matrix</p>
+                <img src="../images/Up.png" onclick="move(pMatrix,[0,0,2])" style="cursor: pointer; margin-left: 54px;" /><br/>
+                <img src="../images/Left.png" onclick="move(pMatrix, [2, 0, 0])" style="cursor: pointer;" />
+                <img src="../images/Back.png" onclick="move(pMatrix, [0, 0, -2])" style="cursor: pointer;" />
+                <img src="../images/Right.png" onclick="move(pMatrix, [-2, 0, 0])" style="cursor: pointer;" /><br />
+                <img src="../images/LeftRot.png" onclick="rotate(pMatrix,[0,-1,0])" style="cursor: pointer;" />
+                <img src="../images/RightRot.png" onclick="rotate(pMatrix, [0, 1, 0])" style="cursor: pointer; margin-left: 54px;" />
+            </div>
+            <div class="panel-3">
+                <canvas id="firstCanvas" style="border: none;"></canvas>
+            </div>
+            <div class="panel-3 buttons">
+                <p>Model View Matrix</p>
+                <img src="../images/Up.png" onclick="moveElements(0, 0, -1)" style="cursor: pointer; margin-left: 54px;" /><br />
+                <img src="../images/Left.png" onclick="moveElements(-1, 0, 0)" style="cursor: pointer;" />
+                <img src="../images/Back.png" onclick="moveElements(0, 0, 1)" style="cursor: pointer;" />
+                <img src="../images/Right.png" onclick="moveElements(1, 0,0)" style="cursor: pointer;" /><br />
+            </div>
+        </div>
+    </div>
 </body>
 </html>

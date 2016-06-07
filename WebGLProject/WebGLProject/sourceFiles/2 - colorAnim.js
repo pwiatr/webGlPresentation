@@ -19,8 +19,8 @@ function GLApp() {
     this.mvMatrixStack = [];
     this.pMatrix = mat4.create();
 
-    this.canvas.setAttribute("width", 900);
-    this.canvas.setAttribute("height", 900);
+    this.canvas.setAttribute("width", 600);
+    this.canvas.setAttribute("height", 600);
     
     this.initGL();
     this.initShaders();
