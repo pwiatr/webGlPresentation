@@ -40,10 +40,26 @@
             <a href="../index.html"><img src="../images/backArrow.png" /></a>
         </div>
         <div class="nav-title">
-            <h1>OpenGL i WebGL</h1>
+            <h1>Bufory</h1>
         </div>
     </div>
-    <canvas id="firstCanvas" ></canvas>
+    <div class="container">
+        <div class="center">
+            <div class="panel-3 buttons">
+                <p>Prędkość obrotu trójkąta</p>
+                <input type="range" id="vel-triangle" min="0" max="1000" value="50"/>
+                <p>Prędkość obrotu kwadratu</p>
+                <input type="range" id="vel-square" min="0" max="1000" value="50" />
+            </div>
+            <div class="panel-3">
+                <canvas id="firstCanvas"></canvas>
+            </div>
+            <div class="panel-3 buttons">
+            </div>
+        </div>
+    </div>
+
+   
     <script src="../sourceFiles/2 - colorAnim.js"></script>
     <script type="text/javascript">
         var app = new GLApp();

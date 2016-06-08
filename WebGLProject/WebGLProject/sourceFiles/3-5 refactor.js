@@ -34,7 +34,16 @@ function WebGlWrapper(canvasId, width, height) {
     this.drawScene();
     //Animation?
     this.tick();
-    
+
+    this.elapsedSeconds = 0;
+    this.direction = 1;
+    this.r = 0;
+    this.g = 0;
+    this.b = 0;
+    this.explode = false;
+
+    document.getElementById("crazy").addEventListener("click", this.explosion.bind(this));
+
 }
 
 WebGlWrapper.prototype.initShaders = function (shaders) {
@@ -153,21 +162,73 @@ WebGlWrapper.prototype.initBuffers = function () {
         ];
         this.Triangle.setColor(colors, 4, 18);
 
-        var vertices = [
-            1.0, 1.0, 0.0,
-            -1.0, 1.0, 0.0,
-            1.0, -1.0, 0.0,
-            -1.0, -1.0, 0.0
-        ];
-        this.Square.setPosition(vertices, 3, 4);
+        vertices = [
+              // Front face
+              -1.0, -1.0, 1.0,
+               1.0, -1.0, 1.0,
+               1.0, 1.0, 1.0,
+              -1.0, 1.0, 1.0,
 
-        var colors = [
-        1.0, 0.0, 0.0, 1.0,
-        0.0, 0.5, 0.0, 1.0,
-        0.0, 0.0, 1.0, 1.0,
-        0.5, 0.2, 0.3, 1.0
+              // Back face
+              -1.0, -1.0, -1.0,
+              -1.0, 1.0, -1.0,
+               1.0, 1.0, -1.0,
+               1.0, -1.0, -1.0,
+
+              // Top face
+              -1.0, 1.0, -1.0,
+              -1.0, 1.0, 1.0,
+               1.0, 1.0, 1.0,
+               1.0, 1.0, -1.0,
+
+              // Bottom face
+              -1.0, -1.0, -1.0,
+               1.0, -1.0, -1.0,
+               1.0, -1.0, 1.0,
+              -1.0, -1.0, 1.0,
+
+              // Right face
+               1.0, -1.0, -1.0,
+               1.0, 1.0, -1.0,
+               1.0, 1.0, 1.0,
+               1.0, -1.0, 1.0,
+
+              // Left face
+              -1.0, -1.0, -1.0,
+              -1.0, -1.0, 1.0,
+              -1.0, 1.0, 1.0,
+              -1.0, 1.0, -1.0,
         ];
-        this.Square.setColor(colors, 4, 4);
+        this.Square.setPosition(vertices, 3, 24);
+
+        colors = [
+         [1.0, 0.0, 0.0, 1.0],     // Front face
+         [1.0, 1.0, 0.0, 1.0],     // Back face
+         [0.0, 1.0, 0.0, 1.0],     // Top face
+         [1.0, 0.5, 0.5, 1.0],     // Bottom face
+         [1.0, 0.0, 1.0, 1.0],     // Right face
+         [0.0, 0.0, 1.0, 1.0],     // Left face
+        ];
+        var unpackedColors = [];
+        for (var i in colors) {
+            var color = colors[i];
+            for (var j = 0; j < 4; j++) {
+                unpackedColors = unpackedColors.concat(color);
+            }
+        }
+
+        this.Square.setColor(unpackedColors, 4, 24);
+
+        var cubeVertexIndices = [
+            0, 1, 2, 0, 2, 3,    // Front face
+            4, 5, 6, 4, 6, 7,    // Back face
+            8, 9, 10, 8, 10, 11,  // Top face
+            12, 13, 14, 12, 14, 15, // Bottom face
+            16, 17, 18, 16, 18, 19, // Right face
+            20, 21, 22, 20, 22, 23  // Left face
+        ];
+
+        this.Square.setIndex(cubeVertexIndices, 1, 36);
 
         var floorVert = [
             5.0, 0.0, 5.0,
@@ -198,20 +259,22 @@ WebGlWrapper.prototype.prepareObjects = function () {
 
 WebGlWrapper.prototype.drawScene = function () {
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
+    this.explode ? gl.clearColor(this.r * 2, this.g * 3, this.b / 4, 1.0) : "";
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    
 
     mat4.perspective(this.pMatrix, 2, gl.viewportWidth / gl.viewportHeight, 0.1, 500.0);
     mat4.translate(this.pMatrix, this.pMatrix, [0.0, -3.0, -2.0]);
     mat4.identity(this.mvMatrix);
     mat4.translate(this.mvMatrix, this.mvMatrix,[-1.0, 0.0, -3.0]);
 
-    WebGLUtils.mvPushMatrix(this.mvMatrix, this.mvMatrixStack);
-    mat4.translate(this.mvMatrix, this.mvMatrix, [0.0, -0.5, 0.0]);
-    this.Floor.draw(this.shaderProgram);
-    WebGLUtils.setMatrixUniform(this.shaderProgram.pMatrixUniform, this.pMatrix);
-    WebGLUtils.setMatrixUniform(this.shaderProgram.mvMatrixUniform, this.mvMatrix);
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.Floor.position.buffer.numItems);
-    WebGLUtils.mvPopMatrix(this.mvMatrix, this.mvMatrixStack);
+    //WebGLUtils.mvPushMatrix(this.mvMatrix, this.mvMatrixStack);
+    //mat4.translate(this.mvMatrix, this.mvMatrix, [0.0, -0.5, 0.0]);
+    //this.Floor.draw(this.shaderProgram);
+    //WebGLUtils.setMatrixUniform(this.shaderProgram.pMatrixUniform, this.pMatrix);
+    //WebGLUtils.setMatrixUniform(this.shaderProgram.mvMatrixUniform, this.mvMatrix);
+    //gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.Floor.position.buffer.numItems);
+    //WebGLUtils.mvPopMatrix(this.mvMatrix, this.mvMatrixStack);
 
     WebGLUtils.mvPushMatrix(this.mvMatrix, this.mvMatrixStack);
     mat4.scale(this.mvMatrix, this.mvMatrix, [5.0, 5.0, 5.0])
@@ -230,7 +293,7 @@ WebGlWrapper.prototype.drawScene = function () {
     this.Square.draw(this.shaderProgram);
     WebGLUtils.setMatrixUniform(this.shaderProgram.pMatrixUniform, this.pMatrix);
     WebGLUtils.setMatrixUniform(this.shaderProgram.mvMatrixUniform, this.mvMatrix);
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, this.Square.position.buffer.numItems);
+    gl.drawElements(gl.TRIANGLES, this.Square.index.buffer.numItems, gl.UNSIGNED_SHORT, 0);
     WebGLUtils.mvPopMatrix(this.mvMatrix, this.mvMatrixStack);
 
 
@@ -249,9 +312,53 @@ WebGlWrapper.prototype.animate = function () {
     if (this.lastTime != 0) {
         var elapsed = timeNow - this.lastTime;
 
-        this.Triangle.velocity += (1 * elapsed) / 1000.0;
-        this.Triangle.rotation += (45 * elapsed) / 1000.0;
-        this.Square.rotation += (75 * elapsed) / 1000.0;
+        this.elapsedSeconds += elapsed;
+    
+        var firstDigit = String(this.elapsedSeconds).charAt(0);
+        this.direction = (firstDigit % 2 == 0 ? -1 : 1);
+
+        this.r = (this.r > 1 ? 0 : this.r + 0.1);
+        this.g = (this.g > 1 ? 0 : this.g + 0.2);
+        this.b = (this.b > 1 ? 0 : this.b + 0.3);
+       
+            var colors = [
+                // Front face
+                this.r, 0.0, 0.0, 1.0,
+                0.0, 1.0, 0.0, 1.0,
+                0.0, this.r, this.g, 1.0,
+                // Right face
+                this.r, this.g, 0.0, 1.0,
+                0.0, this.r, 1.0, 1.0,
+                0.0, 0.2, this.g, 1.0,
+                // Back face
+                1.0, 0.0, 0.0, 1.0,
+                0.0, this.g, 0.0, 1.0,
+                0.0, 0.0, this.r, 1.0,
+                // Left face
+                this.b, 0.0, 0.0, 1.0,
+                0.0, 0.6, this.g, 1.0,
+                0.0, this.b, 0.0, 1.0,
+                // Bottom face
+                this.r, this.g, 0.0, 1.0,
+                0.0, this.r, this.g, 1.0,
+                0.0, 1.0, 0.0, 1.0,
+                this.r, this.g, 0.0, 1.0,
+                0.0, this.r, this.g, 1.0,
+                0.0, this.r, this.g, 1.0
+            ];
+            console.log(this.explode);
+        this.explode ? this.Triangle.setColor(colors, 4, 18) : "";
+            
+
+        this.Triangle.velocity +=  (this.direction  * elapsed) / 1000.0;
+        this.Triangle.rotation +=  (45 * elapsed) / 1000.0;
+        this.Square.rotation += ( 75 * elapsed) / 1000.0;
     }
     this.lastTime = timeNow;
+}
+
+WebGlWrapper.prototype.explosion = function () {
+    console.log("Here");
+    this.explode = true;
+    console.log(this.explode);
 }

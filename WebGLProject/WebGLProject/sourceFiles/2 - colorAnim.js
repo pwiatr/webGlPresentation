@@ -5,6 +5,9 @@ function GLApp() {
     this.canvas = document.getElementById("firstCanvas");
     gl = this.canvas.getContext('experimental-webgl');
     
+    this.velocityTriangle = document.getElementById("vel-triangle");
+    this.velocitySquare = document.getElementById("vel-square");
+
     this.triangleVertexPositionBuffer = null;
     this.squareVertexPositionBuffer = null;
     this.squareVertexColorBuffer = null;
@@ -46,8 +49,8 @@ GLApp.prototype.animate = function () {
     if (this.lastTime != 0) {
         var elapsed = timeNow - this.lastTime;
 
-        this.rTri += (90 * elapsed) / 1000.0;
-        this.rSquare += (75 * elapsed) / 1000.0;
+        this.rTri += (this.velocityTriangle.value * elapsed) / 1000.0;
+        this.rSquare += (this.velocitySquare.value * elapsed) / 1000.0;
     }
     this.lastTime = timeNow;
 }
@@ -182,9 +185,9 @@ GLApp.prototype.drawScene = function() {
     gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    mat4.perspective(90, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, this.pMatrix);
+    mat4.perspective(65, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0, this.pMatrix);
     mat4.identity(this.mvMatrix);
-    mat4.translate(this.mvMatrix, [-1.0, 0.0, -7.0]);
+    mat4.translate(this.mvMatrix, [-1.5, 0.0, -7.0]);
 
     this.mvPushMatrix();
     mat4.rotate(this.mvMatrix, this.degToRad(this.rTri), [10, 0.1, 0.1]);
@@ -199,7 +202,7 @@ GLApp.prototype.drawScene = function() {
     gl.drawArrays(gl.TRIANGLES, 0, this.triangleVertexPositionBuffer.numItems);
     this.mvPopMatrix();
 
-    mat4.translate(this.mvMatrix, [3.0, 0.0, 0.0]);
+    mat4.translate(this.mvMatrix, [3.25, 0.0, 0.0]);
     this.mvPushMatrix();
     
     mat4.rotate(this.mvMatrix, this.degToRad(this.rSquare), [1, 1, 0]);

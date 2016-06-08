@@ -8,6 +8,11 @@
         buffer: gl.createBuffer(),
         vertices: []
     }
+    this.index = {
+        buffer: gl.createBuffer(),
+        indices: []
+    }
+
     this.rotation = 0;
     this.velocity = 0;
 
@@ -27,10 +32,25 @@
         this.color.buffer.numItems = numItems;
     }
 
+    this.setIndex = function (indices, itemSize, numItems) {
+        this.index.indices = indices;
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.index.buffer);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.index.indices), gl.STATIC_DRAW);
+        this.index.buffer.itemSize = itemSize;
+        this.index.buffer.numItems = numItems;
+    }
+
     this.draw = function (shaderProgram) {
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.position.buffer);
-        gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.position.buffer.itemSize, gl.FLOAT, false, 0, 0);
-        gl.bindBuffer(gl.ARRAY_BUFFER, this.color.buffer);
-        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, this.color.buffer.itemSize, gl.FLOAT, false, 0, 0);
+        if(this.position.vertices.length > 0) {
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.position.buffer);
+            gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.position.buffer.itemSize, gl.FLOAT, false, 0, 0);
+        }
+        if (this.color.vertices.length > 0) {
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.color.buffer);
+            gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, this.color.buffer.itemSize, gl.FLOAT, false, 0, 0);
+        }
+        if (this.index.indices.length > 0) {
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.index.buffer);
+        }
     }
 }

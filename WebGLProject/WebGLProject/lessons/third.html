@@ -33,7 +33,16 @@
         }
     </script>
 
-
+    <style>
+        #crazy {
+             font-size: 3em;
+    background-color: #d02c2c;
+    border: 6px;
+    border-style: solid;
+    cursor: pointer;
+        }
+           
+    </style>
 </head>
 <body>
     <div class="nav-panel">
@@ -41,25 +50,25 @@
             <a href="../index.html"><img src="../images/backArrow.png" /></a>
         </div>
         <div class="nav-title">
-            <h1>OpenGL i WebGL</h1>
+            <h1>Obiekty 3D</h1>
         </div>
     </div>
-    <div class="optionPanel">
-        <p>Opcje WebGL</p>
+    <div class="container">
+        <div class="center">
+            <div class="panel-3 buttons">
+                <input type="button" id="crazy" value="Explode" />
+            </div>
+            <div class="panel-3">
+                <canvas id="secondCanvas"></canvas>
+            </div>
+            <div class="panel-3 buttons">
+            </div>
+        </div>
     </div>
-    <!--<div class="canvasPanel">
-        <canvas id="firstCanvas"></canvas>
-    </div>-->
-    <!--<script src="../sourceFiles/3 - refactor.js"></script>
-    <script type="text/javascript">
-        var app = new GLApp();
-    </script>-->
-    <div class="canvasPanel">
-        <canvas id="secondCanvas"></canvas>
-    </div>
+
     <script src="../sourceFiles/3-5 refactor.js"></script>
     <script type="text/javascript">
-        var secondApp = new WebGlWrapper('secondCanvas', 900, 900);
+        var secondApp = new WebGlWrapper('secondCanvas', 600, 600);
     </script>
 
 </body>
